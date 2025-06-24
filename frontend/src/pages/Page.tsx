@@ -1,37 +1,34 @@
-import React from "react";
 import { useState } from "react";
 
+
+export const  useCounter = ()=>{
+  const [Count, setCount] = useState(0);
+
+  const setcount = ()=>{
+    setCount(currentValue=>currentValue+1);
+  }
+  return {
+    count:Count,
+    setcount:setcount
+  }
+}
+
 const Page = () => {
-  const [toggle, settoggle] = useState(true);
-  return (
-    <>
-      <div>
-        <Card1 arg1="Sup bro"/>
-      </div>
-      <br />
+  return <>
+  <div className="flex flex-col gap-5 justify-center items-center mt-10 text-xl ">
+    <Counter/>
+  <Counter/>
+  <Counter/>
+  </div>
+  </>
 
-      <div>
-        <Card1/>
-      </div>
-
-      <div>
-        {toggle && <div>Hello kid</div>}
-      </div>
-      <div>
-        <button onClick={()=>{settoggle(!toggle)}} className="bg-green-500 text-white rounded-2xl p-2">Toggle button</button>
-      </div>
-    </>
-  );
-};
-
-const Card1 = (props) => {
-  return (
-    <div>
-      <div>
-        <h1>Hey there</h1>
-      </div>
-      {props.arg1 && <div>{props.arg1}...</div>}
-    </div>
-  );
 };
 export default Page;
+
+const Counter  = ()=>{
+  const {count,setcount} = useCounter();
+  return <div>
+    <button onClick={setcount}>Counter {count}</button>
+  </div>
+}
+
