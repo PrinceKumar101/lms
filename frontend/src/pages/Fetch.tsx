@@ -10,7 +10,7 @@ const Page = () => {
     <>
       <div className="flex flex-row gap-10 text-xl">
         <button
-          onClick={() => {
+          onClick={()   => {
             setcurrentPost(1);
           }}
           className="bg-slate-500 text-white p-2 rounded "
