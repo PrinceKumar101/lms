@@ -7,11 +7,11 @@ const Increase = () => {
     <button
       onClick={() => {
         setCount((currentValue) => currentValue + 1);
-      }}
+      }}  
     >
       Increase
     </button>
-  );
+  ) ; 
 };
 
 const Decrease = () => {
