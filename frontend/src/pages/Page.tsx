@@ -9,26 +9,26 @@ export const  useCounter = ()=>{
   }
   return {
     count:Count,
-    setcount:setcount
+    setcount:  setcount
   }
 }
 
 const Page = () => {
-  return <>
+  return(  <>
   <div className="flex flex-col gap-5 justify-center items-center mt-10 text-xl ">
     <Counter/>
   <Counter/>
   <Counter/>
   </div>
   </>
-
+  )
 };
 export default Page;
 
 const Counter  = ()=>{
   const {count,setcount} = useCounter();
   return <div>
-    <button onClick={setcount}>Counter {count}</button>
+    <button   onClick={setcount}>Counter {count}</button>
   </div>
 }
 
