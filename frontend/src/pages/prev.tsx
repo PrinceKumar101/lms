@@ -8,7 +8,7 @@ const Prev = () => {
         <div className="bg-black/30 text-4xl flex flex-col justify-center items-center">
             <button onClick={()=>{setcount(c=>c+1)}}>Click me</button>
         <p>{count}</p>
-        <p>Previous value of state was <span>{usePrev(count)}</span></p>
+        <p>Previous value of state was <span>{usePrev(count )}</span></p>
         </div>
     </>
   )
