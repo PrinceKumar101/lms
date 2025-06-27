@@ -1,39 +1,46 @@
 import express from "express";
-import Users from "../models/User_model";
-import { z } from "zod";
-import { login_handler } from "../controller/login";
+import { Request, Response, NextFunction } from "express";
+import { sendResponse } from "../utils/utils"; 
+import userModel from "../models/User_model";
+import { login_handler, signup_handler } from "../controller/auth";
+import { checkIfLoggedIn } from "../middleware/userMiddleware";
 const router = express.Router();
 
+export interface ExtendedRequestHandler extends Request {
+    userId?: string;
+}
+
 router.get("/", (req, res, next) => {
-  res.status(200).send("Hey there this is / route.");
+    res.status(200).send("Hey there this is / route.");
 });
-router.post("/register", async (req, res) => {
-  const parseDataCheck = z.object({
-    firstNmae: z.string().max(20, "FirstName can't be more than 20 word."),
+router.post("/signUp", signup_handler);
 
-    lastName: z.string().max(20, "Lastname can't be more than 20 words."),
-  });
-  const data = {
-    firstName: "prince",
-    lastName: "kumar",
-    email: "princeKumar2019@gmail.com",
-    password: "12345",
-  };
+router.post("/login", login_handler);
 
-  try {
-    const newUser = await Users.insertOne({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      password: data.password,
-    });
-    await newUser.save();
-    res.status(200).send("USer registed.");
-  } catch (error) {
-    res.status(400).send("Error registering user " + error);
-  }
-});
+router.get(
+    "/profile",
+    checkIfLoggedIn,
+    async (req: ExtendedRequestHandler, res, next) => {
+        const userId = req.userId;
+        const projection = { password: 0, paymentMethods: 0 };
+        try {
+            const foundUser = await userModel
+                .findOne({ _id: userId }, projection)
+                .lean();
+            if (!foundUser) throw new Error("User not found.");
+            res.send(foundUser);
+        } catch (err) {
+            res.send(
+                err instanceof Error
+                    ? err.message
+                    : "User not found. Login first."
+            );
+        }
+    }
+);
 
-router.post("/login-user", login_handler);
+router.get("/testing-new-error",(req,res,next)=>{
+    sendResponse(res,200,true,"Hii there")
+})
 
 export default router;
