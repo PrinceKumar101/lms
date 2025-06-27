@@ -5,11 +5,11 @@ export const NavBarBadgeCount = atom({
   default: {
     messageCount: 0,
     notificationCount: 0,
-    connections: 0,
+    connections: 0,   
   },
 });
-
-export const NavBarCount = atomFamily({
+ 
+ export const NavBarCount = atomFamily({
   key: "navbar atomfamily",
   default:0
 });
