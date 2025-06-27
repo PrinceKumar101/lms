@@ -1,9 +1,14 @@
 import jwt, { Jwt, JwtHeader, JwtPayload } from "jsonwebtoken";
+import { Response } from "express";
+import { ar } from "zod/dist/types/v4/locales";
 import { success } from "zod/v4";
+import { RouteHandlerTypes } from "../middleware/userMiddleware";
 
 interface extendedJwtHeader extends JwtHeader {
     isAdmin?: boolean;
 }
+
+
 export const generate_token = async (payload: object, admin: boolean) => {
     const secrect_key =
         process.env[admin ? "Jwt_admin_secret" : "Jwt_user_secret"];
@@ -74,3 +79,28 @@ export const verify_token = (token: string) => {
         userId: tokenData?.userId,
     };
 };
+interface newResponse extends Response{
+
+}
+interface responseType {
+    statusCode:number,
+    success:boolean,
+    message:string,
+    data?:object
+} 
+ type responseType1 = {
+ statusCode:number,
+    success:boolean,
+    message:string,
+    data?:object
+}=>void;
+export const sendResponse = (statusCode,success,message,data):responseType=>{
+
+    res.status(statusCode).json({
+        success:success,
+        message:message,
+        data:data??
+    })
+    
+
+}
