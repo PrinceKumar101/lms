@@ -1,13 +1,13 @@
 import { RecoilRoot } from "recoil";
 
-import AtomFamilyUsage from "./pages/AtomFamily";
+import CustomUI from "./pages/CustomUi";
 
 const App = () => {
   return (
     <>
       <RecoilRoot>
         <div className="bg-black text-white h-screen flex flex-col gap-2 justify-center items-center">
-          <AtomFamilyUsage />
+          <CustomUI/>
         </div>
       </RecoilRoot>
     </>
