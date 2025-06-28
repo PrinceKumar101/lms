@@ -3,10 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 import { ExtendedRequestHandler } from "../routes/user_route";
 import { verify_token } from "../utils/utils";
-import { success } from "zod/v4";
-// export interface ExtendedRequest extends Request {
-//     userId?: string;
-// }
+import userModel from "../models/User_model";
 
 export type RouteHandlerTypes = (
     req: ExtendedRequestHandler,
@@ -33,6 +30,7 @@ export const checkIfLoggedIn: RouteHandlerTypes = (req, res, next) => {
         });
         return;
     }
+    
     req.userId = verifiedToken.userId;
 
     next();
