@@ -86,4 +86,10 @@ const userSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
+userSchema.statics.findByEmail = function (email:string){
+  return this.findOne({email});
+}
+
+
+
 export default mongoose.model("Users", userSchema);
