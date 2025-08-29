@@ -10,9 +10,9 @@ export const signup_handler = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { name, email, password, phoneNumber } = req.body;
+    const { name, email, password, phoneNumber, isTeacher } = req.body;
 
-    if (!name || !password || !email || !phoneNumber) {
+    if (!name || !password || !email || !phoneNumber || !isTeacher) {
         res.status(400).send({
             success: false,
             message: "Must fill all the required information.",
@@ -27,6 +27,7 @@ export const signup_handler = async (
         phoneNumber: z
             .string()
             .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
+        isTeacher:z.boolean(),    
     });
 
     const result = zodInterface.safeParse({
@@ -34,6 +35,7 @@ export const signup_handler = async (
         email,
         password,
         phoneNumber,
+        isTeacher,
     });
     if (!result?.success) {
         const error_message = flattenError(result.error);
@@ -68,12 +70,13 @@ export const signup_handler = async (
             email: email,
             password: hash_password,
             phoneNumber: phoneNumber,
+            role:isTeacher?"teacher":"student",
         });
         const payload = {
             id: newUser._id,
-            isAdmin: newUser.isAdmin,
+            isAdmin: newUser.role === "admin",
         };
-        const generatedToken = await generate_token(payload, newUser.isAdmin);
+        const generatedToken = await generate_token(payload, newUser.role === "admin");
         if (!generatedToken.success) throw new Error(generatedToken.message);
         res.status(200).send({
             success: true,
@@ -140,9 +143,9 @@ export const login_handler = async (
     }
     const payload = {
         id: user?._id,
-        isAdmin: user?.isAdmin,
+        isAdmin: user?.role === "admin",
     };
-    const generatedToken = await generate_token(payload, user.isAdmin);
+    const generatedToken = await generate_token(payload, user.role === "admin");
 
     if (!generatedToken?.success) {
         res.status(401).send({
