@@ -4,7 +4,7 @@ import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn } from "../middleware/userMiddleware";
-import { AiTesting } from "../Ai_testing/testing1";
+
 const router = express.Router();
 
 export interface ExtendedRequestHandler extends Request {
@@ -34,7 +34,7 @@ router.get(
         };
         try {
             const foundUser = await userModel
-                .findOne({ _id: userId }, projection)
+                .findOne({ _id: userId })
                 .lean();
             if (!foundUser) throw new Error("User not found.");
             throwResponse({
@@ -56,12 +56,8 @@ router.get(
     }
 );
 
-router.get("/test", async (req,res,next)=>{
-    const {ans} = req.query;
-   const response = await AiTesting();
-   res.status(200).send(response);
 
-})
+
 
 
 
