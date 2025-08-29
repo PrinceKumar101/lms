@@ -8,7 +8,6 @@ interface extendedJwtHeader extends JwtHeader {
     isAdmin?: boolean;
 }
 
-
 export const generate_token = async (payload: object, admin: boolean) => {
     const secrect_key =
         process.env[admin ? "Jwt_admin_secret" : "Jwt_user_secret"];
@@ -37,15 +36,13 @@ export const generate_token = async (payload: object, admin: boolean) => {
     };
 };
 
-
-
 export const verify_token = (token: string) => {
     if (!token)
         return {
             success: false,
             message: "Token not found.",
         };
-    const decodedToken = jwt.decode(token, {complete:true}) as Jwt;
+    const decodedToken = jwt.decode(token, { complete: true }) as Jwt;
     if (!decodedToken) {
         return {
             success: false,
@@ -79,28 +76,19 @@ export const verify_token = (token: string) => {
         userId: tokenData?.userId,
     };
 };
-interface newResponse extends Response{
 
-}
-interface responseType {
-    statusCode:number,
+type throwResponseParamsTypes = {
+    res:Response,
     success:boolean,
     message:string,
-    data?:object
-} 
- type responseType1 = {
- statusCode:number,
-    success:boolean,
-    message:string,
-    data?:object
-}=>void;
-export const sendResponse = (statusCode,success,message,data):responseType=>{
+    statusCode?:number,
+    data?:object|null
+};
+export const throwResponse = ({ res, success, message, statusCode = 200, data = null }:throwResponseParamsTypes) => {
+    return res.status(statusCode).json(
+        success
+            ? { success: true, message, data }
+            : { success: false, message }
+    );
+};
 
-    res.status(statusCode).json({
-        success:success,
-        message:message,
-        data:data??
-    })
-    
-
-}
