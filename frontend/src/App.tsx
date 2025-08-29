@@ -1,15 +1,10 @@
-import { RecoilRoot } from "recoil";
-
-import CustomUI from "./pages/CustomUi";
+import { RouterProvider } from "react-router-dom";
+import BrowserRouter from "./BrowserRouter";
 
 const App = () => {
   return (
     <>
-      <RecoilRoot>
-        <div className="bg-black text-white h-screen flex flex-col gap-2 justify-center items-center">
-          <CustomUI/>
-        </div>
-      </RecoilRoot>
+      <RouterProvider router={BrowserRouter} />
     </>
   );
 };
