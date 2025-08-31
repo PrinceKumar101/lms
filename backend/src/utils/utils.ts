@@ -73,7 +73,7 @@ export const verify_token = (token: string) => {
     return {
         success: true,
         message: "Token verified.",
-        userId: tokenData?.userId,
+        userId: tokenData?.id,
     };
 };
 

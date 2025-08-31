@@ -4,6 +4,7 @@ import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn } from "../middleware/userMiddleware";
+import { PassThrough } from "stream";
 
 const router = express.Router();
 
@@ -23,40 +24,34 @@ router.get(
     checkIfLoggedIn,
     async (req: ExtendedRequestHandler, res, next) => {
         const userId = req.userId;
-        const projection = {
+        const projection: Record<string, number> = {
             password: 0,
-            paymentMethods: 0,
-            orders: 0,
-            reviews: 0,
-            addresses: 0,
-            wishlist: 0,
-            cart: 0,
+            __v: 0,
         };
+
         try {
             const foundUser = await userModel
-                .findOne({ _id: userId })
+                .findOne({ _id: userId }, projection)
                 .lean();
             if (!foundUser) throw new Error("User not found.");
             throwResponse({
                 res,
-                success:true,
-                message:"User found",
-                data:foundUser
-            })
+                success: true,
+                message: "User found",
+                data: foundUser,
+            });
         } catch (err) {
-            console.log(err instanceof Error ? err.message:err);
-            
+            console.log(err instanceof Error ? err.message : err);
+
             throwResponse({
                 res,
-                statusCode:500,
-                success:false,
+                statusCode: 500,
+                success: false,
                 message: "error fetching data.",
-            })
+            });
         }
     }
 );
-
-
 
 
 
