@@ -67,7 +67,7 @@ export const checkIfTeacher: RouteHandlerTypes = async (req, res, next) => {
     } catch (error) {
         res.status(500).send({
             success: false,
-            message: "Unknown error occured.",
+            message: "Unknown error occurred.",
         });
         return;
     }
