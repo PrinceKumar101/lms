@@ -56,7 +56,7 @@ export const checkIfTeacher: RouteHandlerTypes = async (req, res, next) => {
             });
             return;
         }
-        if (foundUser?.role !== "teacher") {
+        if (foundUser.role !== "teacher") {
             res.status(401).send({
                 success: false,
                 message: "Must be teacher to add courses.",
