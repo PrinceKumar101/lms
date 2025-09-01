@@ -1,4 +1,4 @@
-import { flattenError, success, z } from "zod/v4";
+import { flattenError, z } from "zod/v4";
 import courseModel from "../models/Courses";
 import { ExtendedRequestHandler } from "../routes/user_route";
 import userModel from "../models/User_model";
