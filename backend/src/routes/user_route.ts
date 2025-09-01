@@ -4,7 +4,7 @@ import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
-import { addCourses } from "../controller/coursees";
+import { addCourses } from "../controller/courses";
 
 const router = express.Router();
 
