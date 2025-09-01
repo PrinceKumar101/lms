@@ -10,7 +10,7 @@ export const signup_handler = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { name, email, password, phoneNumber, isTeacher } = req.body;
+    const { name, email, password, phoneNumber, isTeacher } = req.body || {};
 
     if (!name || !password || !email || !phoneNumber || !isTeacher) {
         res.status(400).send({
@@ -97,7 +97,7 @@ export const login_handler = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
     if (!email || !password) {
         res.status(404).send({
             success: false,

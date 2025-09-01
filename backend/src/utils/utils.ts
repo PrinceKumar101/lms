@@ -1,6 +1,5 @@
 import jwt, { Jwt, JwtHeader, JwtPayload } from "jsonwebtoken";
 import { Response } from "express";
-import { ar } from "zod/dist/types/v4/locales";
 import { success } from "zod/v4";
 import { RouteHandlerTypes } from "../middleware/userMiddleware";
 

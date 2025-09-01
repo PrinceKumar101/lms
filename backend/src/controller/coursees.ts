@@ -2,14 +2,15 @@ import { flattenError, z } from "zod/v4";
 import courseModel from "../models/Courses";
 import { ExtendedRequestHandler } from "../routes/user_route";
 import userModel from "../models/User_model";
-import { Request, Response, NextFunction } from "express";
+import { Response } from "express";
 
 export const addCourses = async (
     req: ExtendedRequestHandler,
     res: Response
 ) => {
-    const { title, description, category, thumbnail, price, content } =
-        req?.body;
+        const { title, description, category, thumbnail, price, content } =
+            req?.body || {};
+   
 
     const contentSchema = z.object({
         title: z.string().min(1, "Content title must be a non-empty string."),
@@ -57,7 +58,7 @@ export const addCourses = async (
             });
             return;
         }
-        
+
         //adding the course data
         const newCourse = await courseModel.create({
             title: title,

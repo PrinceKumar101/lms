@@ -39,28 +39,36 @@ export const checkIfLoggedIn: RouteHandlerTypes = (req, res, next) => {
 };
 
 export const checkIfTeacher: RouteHandlerTypes = async (req, res, next) => {
-    const userId = req.userId;
-    if (!userId) {
-        res.status(403).send({
+    try {
+        const userId = req.userId;
+        if (!userId) {
+            res.status(404).send({
+                success: false,
+                message: "Couldn't find User Id.",
+            });
+            return;
+        }
+        const foundUser = await userModel.findOne({ _id: userId });
+        if (!foundUser) {
+            res.status(403).send({
+                success: false,
+                message: "User not found.",
+            });
+            return;
+        }
+        if (foundUser.role !== "teacher") {
+            res.status(401).send({
+                success: false,
+                message: "Must be teacher to add courses.",
+            });
+            return;
+        }
+        next();
+    } catch (error) {
+        res.status(500).send({
             success: false,
-            message: "Error fetching userID.",
+            message: "Unknown error occurred.",
         });
         return;
     }
-    const foundUser = await User_model.findOne({ _id: userId });
-    if (!foundUser) {
-        res.status(403).send({
-            success: false,
-            message: "Error user not found.",
-        });
-        return;
-    }
-    if (foundUser.role !== "teacher") {
-        res.status(403).send({
-            success: false,
-            message: "Error user not a teacher",
-        });
-        return;
-    }
-    next();
 };
