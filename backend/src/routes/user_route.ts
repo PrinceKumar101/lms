@@ -3,8 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
-import { checkIfLoggedIn } from "../middleware/userMiddleware";
-import { PassThrough } from "stream";
+import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
+import { addCourses } from "../controller/coursees";
 
 const router = express.Router();
 
@@ -53,7 +53,6 @@ router.get(
     }
 );
 
-
-
+router.put("/add-courses",checkIfLoggedIn, checkIfTeacher, addCourses);
 
 export default router;
