@@ -50,7 +50,7 @@ export const checkIfTeacher: RouteHandlerTypes = async (req, res, next) => {
         }
         const foundUser = await userModel.findOne({ _id: userId });
         if (!foundUser) {
-            res.status(404).send({
+            res.status(403).send({
                 success: false,
                 message: "User not found.",
             });
