@@ -99,7 +99,7 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
     } catch (error) {
         res.status(500).send({
             success: false,
-            message: "Unexpected error occured.",
+            message: "Unexpected error occurred.",
         });
         return;
     }
