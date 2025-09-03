@@ -81,24 +81,27 @@ export const addCourses = async (req: ExtendedRequestHandler, res: Response) => 
 export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) => {
     const courseId = req.params.courseId;
     if (!courseId) {
-        return res.status(404).send({
+        res.status(404).send({
             success: false,
             message: "Couse Id not found.",
         });
+        return;
     }
     try {
         const foundCourse = await courseModel.deleteOne({ _id: courseId });
         if (!foundCourse || !foundCourse.acknowledged || foundCourse.deletedCount === 0) {
-            return res.status(404).send({
+            res.status(404).send({
                 success: false,
                 message: "Couldn't find course.",
             });
+            return;
         }
     } catch (error) {
-        return res.status(500).send({
+        res.status(500).send({
             success: false,
             message: "Unexpected error occured.",
         });
+        return;
     }
 
     res.status(200).send({
