@@ -109,3 +109,37 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
         message: "Deleted course successfully.",
     });
 };
+
+export const viewCourse = async (req: ExtendedRequestHandler, res: Response) => {
+    const courseId = req.params.courseId;
+
+    if (!courseId) {
+        res.status(400).send({
+            success: false,
+            message: "Course ID is required.",
+        });
+        return;
+    }
+
+    try {
+        const foundCourse = await courseModel.findOne({ _id: courseId });
+        if (!foundCourse) {
+            res.status(404).send({
+                success: false,
+                message: "Course not found.",
+            });
+            return;
+        }
+        res.status(200).send({
+            success: true,
+            message: "Course Found.",
+            data: foundCourse,
+        });
+    } catch (err) {
+        res.status(500).send({
+            success: false,
+            message: err instanceof Error ? err.message : "Unexpected error occurred.",
+        });
+        return;
+    }
+};
