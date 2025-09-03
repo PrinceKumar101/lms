@@ -175,7 +175,7 @@ export const updateCourse = async (req: ExtendedRequestHandler, res: Response) =
     const contentSchema = z.object({
         title: z.string().min(1, "Content title must be a non-empty string."),
         type: z.enum(["video", "pdf", "quiz", "assignment"]),
-        url: z.string().url("content url shoud be valid"),
+        url: z.string().url("content url should be valid"),
         order: z.number().int().positive("Order must be a positive integer."),
     });
     //This is for partially selecting the fields from contentSchema still checking the fields;
@@ -189,8 +189,8 @@ export const updateCourse = async (req: ExtendedRequestHandler, res: Response) =
         price: z.number().positive("Price must be a positive number."),
         content: z.array(updatedContentSchema).optional(),
     });
-    const updatedZodIterface = zodInterface.partial();
-    const result = updatedZodIterface.safeParse(req.body);
+    const updatedZodInterface = zodInterface.partial();
+    const result = updatedZodInterface.safeParse(req.body);
 
     if (!result?.success) {
         const error_message = result.error.flatten();
