@@ -104,8 +104,6 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
         return;
     }
 
-    res.status(200).send({
-        success: true,
-        message: "Deleted course Successfully.",
+        message: "Deleted course successfully.",
     });
 };
