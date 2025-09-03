@@ -171,8 +171,8 @@ export const updateCourse = async (req: ExtendedRequestHandler, res: Response) =
         price: z.number().positive("Price must be a positive number."),
         content: z.array(updatedContentSchema).optional(),
     });
-    const updatedZodIterface = zodInterface.partial();
-    const result = updatedZodIterface.safeParse(req.body);
+    const updatedZodInterface = zodInterface.partial();
+    const result = updatedZodInterface.safeParse(req.body);
 
     if (!result?.success) {
         const error_message = result.error.flatten();
