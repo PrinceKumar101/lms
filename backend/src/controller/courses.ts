@@ -81,9 +81,9 @@ export const addCourses = async (req: ExtendedRequestHandler, res: Response) => 
 export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) => {
     const courseId = req.params.courseId;
     if (!courseId) {
-        res.status(404).send({
+        res.status(400).send({
             success: false,
-            message: "Course Id not found.",
+            message: "Missing required parameter: courseId.",
         });
         return;
     }
