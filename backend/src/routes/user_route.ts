@@ -51,7 +51,7 @@ router.put("/add-courses", checkIfLoggedIn, checkIfTeacher, addCourses);
 
 router.delete("/delete-course/:courseId", checkIfLoggedIn, checkIfTeacher, deleteCourse);
 
-// This route is to handle case when user has not passed Course Id as a pramater in route.
+// This route is to handle case when user has not passed Course Id as a parameter in route.
 router.delete("/delete-course", checkIfLoggedIn, (req, res) => {
     res.status(400).send({
         success: false,
