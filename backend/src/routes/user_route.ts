@@ -6,6 +6,7 @@ import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
 import { addCourses, deleteCourse, updateCourse, viewCourse } from "../controller/courses";
 import { success } from "zod/v4";
+import { viewAllCourses } from "../controller/home";
 const router = express.Router();
 
 export interface ExtendedRequestHandler extends Request {
@@ -72,5 +73,21 @@ router.get("/view-course", (req,res)=>{
 
 //This route is to update the course.
 router.put("/update-course/:courseId",checkIfLoggedIn,checkIfTeacher,updateCourse);
+
+//This route is to hande case when user has not passed Course Id as a parameter in route;
+router.put("/update-course/", (req,res)=>{
+        res.status(400).send({
+        success: false,
+        message: "Course ID is required. Use route /view-course/:courseId",
+    });
+})
+//This is home route
+router.get("/home", checkIfLoggedIn,viewAllCourses);
+
+
+
+
+
+
 
 export default router;
