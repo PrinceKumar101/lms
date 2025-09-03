@@ -5,8 +5,6 @@ import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
 import { addCourses, deleteCourse } from "../controller/courses";
-import { success } from "zod/v4";
-
 const router = express.Router();
 
 export interface ExtendedRequestHandler extends Request {
