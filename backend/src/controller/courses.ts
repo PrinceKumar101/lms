@@ -80,6 +80,7 @@ export const addCourses = async (req: ExtendedRequestHandler, res: Response) => 
 
 export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) => {
     const courseId = req.params.courseId;
+    const userId = req.userId;
     if (!courseId) {
         res.status(400).send({
             success: false,
@@ -88,11 +89,27 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
         return;
     }
     try {
-        const foundCourse = await courseModel.deleteOne({ _id: courseId });
-        if (!foundCourse || !foundCourse.acknowledged || foundCourse.deletedCount === 0) {
+        const foundCourse = await courseModel.findOne({ _id: courseId });
+        if (!foundCourse) {
             res.status(404).send({
                 success: false,
-                message: "Couldn't find course.",
+                message: "Course not found.",
+            });
+            return;
+        }
+        if (foundCourse.createdBy.toString() !== userId) {
+            res.status(403).send({
+                success: false,
+                message: "Not authorized to delete this course.",
+            });
+            return;
+        }
+        const deletedCourse = await courseModel.deleteOne({ _id: courseId });
+
+        if (!deletedCourse || !deletedCourse.acknowledged || deletedCourse.deletedCount === 0) {
+            res.status(404).send({
+                success: false,
+                message: "Couldn't delete course.",
             });
             return;
         }
@@ -108,6 +125,7 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
         success: true,
         message: "Deleted course successfully.",
     });
+    return;
 };
 
 export const viewCourse = async (req: ExtendedRequestHandler, res: Response) => {
