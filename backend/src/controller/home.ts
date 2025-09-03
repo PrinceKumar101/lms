@@ -10,7 +10,7 @@ export const viewAllCourses = async (req: ExtendedRequestHandler, res: Response)
 
 
     try {
-            const courses = await Courses.find().skip(skip).limit(limit) .select("title description thumbnail price ").populate("createdBy", "fullName");
+            const courses = await Courses.find().skip(skip).limit(limit).select("title description thumbnail price ").populate("createdBy", "fullName");
            const total = await Courses.countDocuments();
            if (courses.length === 0) {
              res.status(200).send({
