@@ -4,7 +4,7 @@ import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
-import { addCourses, deleteCourse, viewCourse } from "../controller/courses";
+import { addCourses, deleteCourse, updateCourse, viewCourse } from "../controller/courses";
 import { success } from "zod/v4";
 const router = express.Router();
 
@@ -69,5 +69,8 @@ router.get("/view-course", (req,res)=>{
         message: "Course ID is required. Use route /view-course/:courseId",
     });
 });
+
+//This route is to update the course.
+router.put("/update-course/:courseId",checkIfLoggedIn,checkIfTeacher,updateCourse);
 
 export default router;

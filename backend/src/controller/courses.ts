@@ -143,3 +143,76 @@ export const viewCourse = async (req: ExtendedRequestHandler, res: Response) => 
         return;
     }
 };
+
+export const updateCourse = async (req: ExtendedRequestHandler, res: Response) => {
+    const courseId = req.params.courseId;
+    if (!courseId) {
+        res.status(400).send({
+            success: false,
+            message: "Missing required parameter: courseId.",
+        });
+        return;
+    }
+    const { title, description, category, thumbnail, price, content } = req?.body || {};
+    const contentSchema = z.object({
+        title: z.string().min(1, "Content title must be a non-empty string."),
+        type: z.enum(["video", "pdf", "quiz", "assignment"]),
+        url: z.string().url("content url shoud be valid"),
+        order: z.number().int().positive("Order must be a positive integer."),
+    });
+    //This is for partially selecting the fields from contentSchema still checking the fields;
+    const updatedContentSchema = contentSchema.partial();
+
+    const zodInterface = z.strictObject({
+        title: z.string().min(1, "Title must be a non-empty string."),
+        description: z.string().min(1, "Description must be a non-empty string."),
+        category: z.string().min(1, "Category must be a non-empty string."),
+        thumbnail: z.string().url("Thumbnail must be a valid URL."),
+        price: z.number().positive("Price must be a positive number."),
+        content: z.array(updatedContentSchema).optional(),
+    });
+    const updatedZodIterface = zodInterface.partial();
+    const result = updatedZodIterface.safeParse(req.body);
+
+    if (!result?.success) {
+        const error_message = result.error.flatten();
+        res.status(400).send({
+            success: false,
+            message: error_message.fieldErrors,
+        });
+        return;
+    }
+
+    const userId = req.userId;
+    try {
+        const foundCourse = await courseModel.findOne({ _id: courseId });
+        if (!foundCourse) {
+            res.status(404).send({
+                success: false,
+                message: "Couldn't find course.",
+            });
+            return;
+        }
+        if (foundCourse.createdBy.toString() != userId) {
+            res.status(403).send({
+                success: false,
+                message: "Forbidden access",
+            });
+            return;
+        }
+        const updatedCourse = await courseModel.findOneAndUpdate({ _id: courseId }, result.data, { new: true });
+        if (updatedCourse) {
+            res.status(200).send({
+                success: true,
+                message: "Course updated Successfully",
+                data: updatedCourse,
+            });
+        }
+    } catch (e) {
+        res.status(500).send({
+            success: false,
+            message: "Unexpected error occurred.",
+        });
+        return;
+    }
+};
