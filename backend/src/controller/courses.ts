@@ -157,7 +157,7 @@ export const updateCourse = async (req: ExtendedRequestHandler, res: Response) =
     const contentSchema = z.object({
         title: z.string().min(1, "Content title must be a non-empty string."),
         type: z.enum(["video", "pdf", "quiz", "assignment"]),
-        url: z.string().url("content url shoud be valid"),
+        url: z.string().url("content url should be valid"),
         order: z.number().int().positive("Order must be a positive integer."),
     });
     //This is for partially selecting the fields from contentSchema still checking the fields;
