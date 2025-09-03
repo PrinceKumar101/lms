@@ -59,6 +59,6 @@ router.delete("/delete-course", checkIfLoggedIn, (req, res) => {
     });
 });
 
-router.get("/view-course/:CourseId", viewCourse);
+router.get("/view-course/:courseId", viewCourse);
 
 export default router;
