@@ -82,7 +82,7 @@ router.put("/update-course/", (req,res)=>{
     });
 })
 //This is home route
-router.get("/home", checkIfLoggedIn,viewAllCourses);
+router.get("/viewAllCourses", checkIfLoggedIn,viewAllCourses);
 
 
 
