@@ -52,7 +52,7 @@ router.put("/add-courses", checkIfLoggedIn, checkIfTeacher, addCourses);
 router.delete("/delete-course/:courseId", checkIfLoggedIn, checkIfTeacher, deleteCourse);
 
 router.delete("/delete-course", checkIfLoggedIn, (req, res) => {
-    res.status(401).send({
+    res.status(400).send({
         success: false,
         message: "Requested Course Id ( route/delete-course/:courseId ).",
     });
