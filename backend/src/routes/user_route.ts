@@ -4,7 +4,8 @@ import { throwResponse } from "../utils/utils";
 import userModel from "../models/User_model";
 import { login_handler, signup_handler } from "../controller/auth";
 import { checkIfLoggedIn, checkIfTeacher } from "../middleware/userMiddleware";
-import { addCourses, deleteCourse } from "../controller/courses";
+import { addCourses, deleteCourse, viewCourse } from "../controller/courses";
+import { success } from "zod/v4";
 const router = express.Router();
 
 export interface ExtendedRequestHandler extends Request {
@@ -51,10 +52,21 @@ router.put("/add-courses", checkIfLoggedIn, checkIfTeacher, addCourses);
 
 router.delete("/delete-course/:courseId", checkIfLoggedIn, checkIfTeacher, deleteCourse);
 
+// This route is to handle case when user has not passed Course Id as a parameter in route.
 router.delete("/delete-course", checkIfLoggedIn, (req, res) => {
     res.status(400).send({
         success: false,
         message: "Course ID is required. Use route /delete-course/:courseId",
+    });
+});
+
+router.get("/view-course/:courseId", viewCourse);
+
+// This route is to handle case when user has not passed Course Id as a parameter in route.
+router.get("/view-course", (req,res)=>{
+    res.status(400).send({
+        success: false,
+        message: "Course ID is required. Use route /view-course/:courseId",
     });
 });
 
