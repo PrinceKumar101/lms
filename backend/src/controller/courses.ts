@@ -83,7 +83,7 @@ export const deleteCourse = async (req: ExtendedRequestHandler, res: Response) =
     if (!courseId) {
         res.status(404).send({
             success: false,
-            message: "Couse Id not found.",
+            message: "Course Id not found.",
         });
         return;
     }
