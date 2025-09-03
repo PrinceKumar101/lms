@@ -54,7 +54,7 @@ router.delete("/delete-course/:courseId", checkIfLoggedIn, checkIfTeacher, delet
 router.delete("/delete-course", checkIfLoggedIn, (req, res) => {
     res.status(400).send({
         success: false,
-        message: "Requested Course Id ( route/delete-course/:courseId ).",
+        message: "Course ID is required. Use route /delete-course/:courseId",
     });
 });
 
