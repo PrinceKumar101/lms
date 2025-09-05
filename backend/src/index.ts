@@ -9,9 +9,11 @@ app.use(express.urlencoded({ extended: true }));
 import { db } from "./config/db_config";
 import user_route from "./routes/user_route";
 import admin_route from "./routes/admin_route";
+import enrollement_route from "./routes/enrollement_route"
 
 db();
 app.use("/api-v1", user_route);
+app.use("/api-v1", enrollement_route)
 app.use("/api-v1/admin", admin_route);
 
 
